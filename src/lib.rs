@@ -56,9 +56,9 @@ pub enum Error {
     PlatformNotSupported(String),
 }
 
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "openbsd"))]
 pub mod linux;
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "openbsd"))]
 pub use crate::linux::*;
 
 #[cfg(target_os = "macos")]
@@ -84,7 +84,7 @@ pub use crate::windows::*;
 /// For Windows systems Win32's IP Helper is used to gather the Local IP
 /// address
 pub fn local_ip() -> Result<IpAddr, Error> {
-    #[cfg(target_os = "linux")]
+    #[cfg(any(target_os = "linux", target_os = "openbsd"))]
     {
         crate::linux::local_ip()
     }
@@ -128,7 +128,7 @@ mod tests {
     use super::*;
 
     #[test]
-    #[cfg(target_os = "linux")]
+    #[cfg(any(target_os = "linux", target_os = "openbsd"))]
     fn find_local_ip() {
         let my_local_ip = local_ip().unwrap();
 
@@ -155,7 +155,7 @@ mod tests {
     }
 
     #[test]
-    #[cfg(target_os = "linux")]
+    #[cfg(any(target_os = "linux", target_os = "openbsd"))]
     fn find_network_interfaces() {
         let network_interfaces = list_afinet_netifas();
 
